@@ -3,6 +3,11 @@ module.exports = {
     require('postcss-import'),
     require('tailwindcss'),
     require('postcss-nested'),
-    require('autoprefixer')
+    require('autoprefixer'),
+    require('postcss-pxtorem')({
+      rootValue: '192',
+      minPixelValue: 2,
+      propList: ['*']
+    })
   ]
 }

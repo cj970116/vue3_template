@@ -1,0 +1,8 @@
+{
+  "loginUrl": "",
+  "serverUrl": "http://172.19.10.207:9119",
+  "service": {
+    "publicOpinion": "publicOpinion110",
+    "system": "publicOpinion110"
+  }
+}

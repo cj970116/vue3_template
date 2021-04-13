@@ -1,18 +1,15 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosPromise, AxiosInstance } from 'axios'
 import Qs from 'qs'
 
-import { get } from 'lodash'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { get as _get } from 'lodash'
 // 创建axios实例
-const ajax = axios.create({
-  // api默认前缀
-  baseURL: import.meta.env.VITE_APP_BASE_URL,
+const ajax: AxiosInstance & { [method: string]: any } = axios.create({
   withCredentials: true,
   timeout: 10000
 })
+// 错误处理回调函数
 const errorHandler = (error: Error) => {
-  const status = get(error, 'response.status')
+  const status = _get(error, 'response.status')
   switch (status) {
     case 400:
       error.message = '请求错误'
@@ -77,32 +74,35 @@ ajax.interceptors.response.use((response: AxiosResponse) => {
   }
 }, errorHandler)
 
-export default function (
-  url: string,
-  params: any = {},
-  config: AxiosRequestConfig,
-  type: string
-): AxiosPromise {
-  const method = type.toLocaleLowerCase()
-  let request: any = []
-  switch (method) {
-    case 'get':
-      request = [url, config]
-      break
-    case 'post':
-      request = [url, Qs.stringify(params), config]
-      break
-  }
+export function get(url: string, params?: any): AxiosPromise {
   return new Promise((resolve, reject) => {
-    ajax[method](...request).then((resp) => {
-      if (url === './config.json') {
-        resolve && resolve(resp.data)
-      }
-      if (resp.code === 0) {
-        resolve && resolve(resp.data)
-      } else {
-        reject(resp.data)
-      }
+    ajax({
+      method: 'get',
+      url,
+      params
     })
+      .then((resp) => {
+        resolve?.(resp.data)
+      })
+      .catch((err: Error) => {
+        reject?.(err)
+      })
+  })
+}
+
+export function post(url: string, data?: any, headers = {}): AxiosPromise {
+  return new Promise((resolve, reject) => {
+    ajax({
+      method: 'post',
+      url,
+      data: Qs.stringify(data),
+      headers
+    })
+      .then((resp) => {
+        resolve?.(resp.data)
+      })
+      .catch((err: Error) => {
+        reject?.(err)
+      })
   })
 }

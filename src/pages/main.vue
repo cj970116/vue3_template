@@ -6,10 +6,14 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue'
+  import { defineComponent, onMounted, getCurrentInstance } from 'vue'
+  import { getDicDTOListByType } from '../interfaces/system'
   export default defineComponent({
     setup() {
-      let name = 'cjee'
+      onMounted(() => {
+        const { proxy }: any = getCurrentInstance()
+        console.log(proxy.$config)
+      })
       return {}
     }
   })
@@ -17,12 +21,13 @@
 
 <style lang="postcss" scoped>
   .main-conmtainer {
-    @apply container flex flex-col items-center bg-green-300 h-screen;
+    @apply flex flex-col items-center bg-green-300 h-screen box-border p-1;
     img {
-      @apply w-60;
+      @apply w-10;
     }
     span {
-      @apply text-white text-4xl;
+      font-size: 50px;
+      @apply text-white;
     }
   }
   /* .main-conmtainer img {

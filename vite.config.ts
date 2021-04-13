@@ -1,16 +1,14 @@
+/*
+ * @Author: cjee
+ */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 
-const pathResolve = (pathStr: string): string => {
-  return resolve(__dirname, '.', pathStr)
-}
-
 export default defineConfig({
   alias: {
-    '@': pathResolve('./src')
+    '@': resolve(__dirname, './src')
   },
-
   server: {
     open: false,
     https: false,
